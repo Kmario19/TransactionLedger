@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Transaction Ledger API",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "pnpm",
+            "runtimeArgs": ["dev"],
+            "skipFiles": ["<node_internals>/**"],
+            "env": {
+                "NODE_ENV": "development",
+                "PORT": "3000"
+            },
+            "console": "integratedTerminal"
+        }
+    ]
+}
