@@ -7,7 +7,15 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["node_modules", "dist", "build", "coverage", ".git", ".vscode"]
+    "ignore": [
+      "node_modules",
+      "dist",
+      "build",
+      "coverage",
+      ".git",
+      ".vscode",
+      ".dockerignore"
+    ]
   },
   "formatter": {
     "enabled": true,
