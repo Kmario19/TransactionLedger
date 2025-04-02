@@ -27,22 +27,14 @@ export default (schemas: ValidationSchema) => {
         return;
       }
 
-      if (schemas.query && Object.keys(req.query).length === 0) {
-        res.status(StatusCodes.BAD_REQUEST).json({
-          error: 'Validation Error',
-          message: 'Query parameters are required',
-        });
-        return;
-      }
-
       if (schemas.body) {
         req.body = await schemas.body.parseAsync(req.body);
       }
       if (schemas.params) {
-        req.params = await schemas.params.parseAsync(req.params);
+        await schemas.params.parseAsync(req.params);
       }
       if (schemas.query) {
-        req.query = await schemas.query.parseAsync(req.query);
+        await schemas.query.parseAsync(req.query || {});
       }
 
       next();
@@ -58,9 +50,7 @@ export default (schemas: ValidationSchema) => {
         });
         return;
       }
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        error: 'Internal Server Error',
-      });
+      throw error;
     }
   };
 };
