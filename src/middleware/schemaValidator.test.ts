@@ -126,4 +126,53 @@ describe('Schema Validator Middleware', () => {
 
     expect(nextFunction).toHaveBeenCalled();
   });
+
+  it('should return error when params are required but empty', async () => {
+    const schema = {
+      params: z.object({
+        id: z.string(),
+      }),
+    };
+
+    mockRequest.params = {};
+
+    await schemaValidator(schema)(mockRequest as Request, mockResponse as Response, nextFunction);
+
+    expect(mockResponse.status).toHaveBeenCalledWith(StatusCodes.BAD_REQUEST);
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      error: 'Validation Error',
+      message: 'URL parameters are required',
+    });
+  });
+
+  it('should handle optional query parameters', async () => {
+    const schema = {
+      query: z.object({
+        search: z.string().optional(),
+        page: z.number().optional(),
+      }),
+    };
+
+    mockRequest.query = undefined;
+
+    await schemaValidator(schema)(mockRequest as Request, mockResponse as Response, nextFunction);
+
+    expect(nextFunction).toHaveBeenCalled();
+  });
+
+  it('should throw internal error for non-Zod errors', async () => {
+    const schema = {
+      body: z.object({
+        name: z.string(),
+      }),
+    };
+
+    const error = new Error('Internal error');
+    mockRequest.body = {};
+    jest.spyOn(schema.body, 'parseAsync').mockRejectedValue(error);
+
+    await expect(
+      schemaValidator(schema)(mockRequest as Request, mockResponse as Response, nextFunction)
+    ).rejects.toThrow(error);
+  });
 });
