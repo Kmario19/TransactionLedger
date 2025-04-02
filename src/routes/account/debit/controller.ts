@@ -28,5 +28,5 @@ export default async (req: Request, res: Response) => {
   account.balance -= cost;
   await account.save();
 
-  res.status(StatusCodes.CREATED).json({ account: account.toObject(), transaction: transaction.toObject() });
+  res.status(StatusCodes.CREATED).json({ account, transaction });
 };

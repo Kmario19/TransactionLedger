@@ -23,7 +23,6 @@ export default async function editAccountController(req: Request, res: Response)
       account,
     });
   } catch (error) {
-    // TODO: Test this error handling
     if ((error as { code: number }).code === 11000) {
       res.status(StatusCodes.CONFLICT).json({
         error: 'Account name already exists',

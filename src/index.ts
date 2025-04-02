@@ -1,26 +1,14 @@
 import dotenv from 'dotenv';
-import express from 'express';
 import mongoose from 'mongoose';
-import apiRoutes from '@/routes';
+import app from './app';
 import { connectDB } from '@/config/database';
-import errorHandler from '@/middleware/errorHandler';
 
 dotenv.config();
 
-export const app = express();
 const PORT = +(process.env.PORT || '3000');
 
 // Connect to MongoDB
 connectDB();
-
-// Middleware to parse JSON
-app.use(express.json());
-
-// Routes
-app.use('/api', apiRoutes);
-
-// Error handling
-app.use(errorHandler);
 
 // Graceful shutdown function
 const gracefulShutdown = async (signal: string) => {
@@ -39,7 +27,7 @@ const gracefulShutdown = async (signal: string) => {
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
-// Start server
+// Start server if not in test environment
 if (process.env.NODE_ENV !== 'test') {
   const server = app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
