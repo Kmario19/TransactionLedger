@@ -4,7 +4,7 @@ import express from 'express';
 dotenv.config();
 
 export const app = express();
-const PORT = Number.parseInt(process.env.PORT || '3000', 10);
+const PORT = +(process.env.PORT || '3000');
 
 // Middleware to parse JSON
 app.use(express.json());
