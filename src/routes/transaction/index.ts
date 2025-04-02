@@ -1,4 +1,4 @@
-import express, { Router } from 'express';
+import { Router } from 'express';
 import schemaValidator from '@/middleware/schemaValidator';
 import validate from '@/middleware/schemaValidator';
 

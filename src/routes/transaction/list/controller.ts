@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { Transaction, TransactionType } from '@/models/Transaction';
+import { Transaction } from '@/models/Transaction';
 import type { FilterQuery } from 'mongoose';
 import type { ITransaction } from '@/models/Transaction';
 
@@ -11,8 +11,8 @@ const listTransactionController = async (req: Request, res: Response) => {
     endDate,
     accountId,
     type,
-    sortBy,
-    sortOrder,
+    sortBy = 'date',
+    sortOrder = 'desc',
     minAmount,
     maxAmount,
     minCost,
@@ -66,7 +66,7 @@ const listTransactionController = async (req: Request, res: Response) => {
   const skip = (Number(page) - 1) * Number(limit);
 
   const [transactions, total] = await Promise.all([
-    Transaction.find(filter).sort(sort).skip(skip).limit(Number(limit)).populate('account', 'name'),
+    Transaction.find(filter).sort(sort).skip(skip).limit(Number(limit)),
     Transaction.countDocuments(filter),
   ]);
 

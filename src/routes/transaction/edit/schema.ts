@@ -10,8 +10,8 @@ export default {
   body: z
     .object({
       date: z.string().date().optional(),
-      amount: z.number().optional(),
-      cost: z.number().optional(),
+      amount: z.number().positive().optional(),
+      cost: z.number().positive().optional(),
     })
     .refine(
       data => {

@@ -27,9 +27,9 @@ export default async function editTransactionController(req: Request, res: Respo
   let balanceAdjustment = 0;
 
   if (transaction.type === TransactionType.credit && amount !== undefined) {
-    balanceAdjustment = amount - (transaction.amount || 0);
+    balanceAdjustment = amount - (transaction.amount ?? 0);
   } else if (transaction.type === TransactionType.debit && cost !== undefined) {
-    balanceAdjustment = (transaction.cost || 0) - cost;
+    balanceAdjustment = (transaction.cost ?? 0) - cost;
   }
 
   // Check if new balance would be negative

@@ -32,9 +32,9 @@ export default async function deleteTransactionController(req: Request, res: Res
     // Calculate balance adjustment
     let balanceAdjustment = 0;
     if (transaction.type === TransactionType.credit) {
-      balanceAdjustment = -(transaction.amount || 0);
+      balanceAdjustment = -(transaction.amount ?? 0);
     } else {
-      balanceAdjustment = transaction.cost || 0;
+      balanceAdjustment = transaction.cost ?? 0;
     }
 
     // Check if deletion would result in negative balance
