@@ -23,6 +23,7 @@ describe('Express Server', () => {
 
   describe('Server Configuration', () => {
     it('should use default port 3000 when PORT env is not set', () => {
+      // @ts-ignore
       process.env.PORT = undefined;
       const { app: testApp } = require('./index');
       expect(testApp.get('port')).toBe(3000);
