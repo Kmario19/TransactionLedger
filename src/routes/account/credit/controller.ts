@@ -23,7 +23,5 @@ export default async (req: Request, res: Response) => {
   account.balance += amount;
   await account.save();
 
-  console.log(account);
-
   res.status(StatusCodes.CREATED).json({ account, transaction });
 };
