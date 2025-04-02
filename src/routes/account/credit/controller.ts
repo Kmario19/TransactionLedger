@@ -8,7 +8,7 @@ export default async (req: Request, res: Response) => {
   const { amount, date } = req.body;
 
   const account = await Account.findById(accountId);
-  if (account) {
+  if (!account) {
     res.status(StatusCodes.NOT_FOUND).json({ error: 'Account not found' });
     return;
   }
