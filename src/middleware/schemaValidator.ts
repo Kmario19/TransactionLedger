@@ -3,15 +3,14 @@ import { type z, ZodError } from 'zod';
 import { StatusCodes } from 'http-status-codes';
 
 type ValidationSchema = {
-  body?: z.ZodObject<z.ZodRawShape>;
-  params?: z.ZodObject<z.ZodRawShape>;
-  query?: z.ZodObject<z.ZodRawShape>;
+  body?: z.ZodType;
+  params?: z.ZodType;
+  query?: z.ZodType;
 };
 
 export default (schemas: ValidationSchema) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // Check if required components are present
       if (schemas.body && !req.body) {
         res.status(StatusCodes.BAD_REQUEST).json({
           error: 'Validation Error',
@@ -36,7 +35,6 @@ export default (schemas: ValidationSchema) => {
         return;
       }
 
-      // Validate components if they exist
       if (schemas.body) {
         req.body = await schemas.body.parseAsync(req.body);
       }
