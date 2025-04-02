@@ -1,5 +1,4 @@
 import mongoose, { type Document } from 'mongoose';
-import type { ITransaction } from './Transaction';
 
 export interface IAccount extends Document {
   name: string;
@@ -17,7 +16,6 @@ const accountSchema = new mongoose.Schema(
     },
     balance: {
       type: Number,
-      required: true,
       default: 0,
     },
   },

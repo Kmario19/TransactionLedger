@@ -4,4 +4,7 @@ module.exports = {
   },
   testEnvironment: 'node',
   testMatch: ['**/*.test.ts'],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
 };
