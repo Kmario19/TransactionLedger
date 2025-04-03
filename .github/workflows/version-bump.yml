@@ -1,0 +1,97 @@
+name: Version Bump and Tag
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - '.github/**'
+
+jobs:
+  bump-version:
+    if: "!startsWith(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: Get latest tag
+        id: get_latest_tag
+        run: |
+          # Get latest tag or use v0.0.0 if none exists
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_OUTPUT
+
+      - name: Determine version bump type
+        id: bump_type
+        run: |
+          # Default to patch version bump
+          BUMP_TYPE="patch"
+          
+          # Check commit messages since last tag for keywords
+          if git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:"%s" | grep -q "BREAKING CHANGE"; then
+            BUMP_TYPE="major"
+          elif git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:"%s" | grep -q -E "feat:|feature:"; then
+            BUMP_TYPE="minor"
+          fi
+          
+          echo "BUMP_TYPE=$BUMP_TYPE" >> $GITHUB_OUTPUT
+
+      - name: Bump version
+        id: bump_version
+        run: |
+          LATEST_TAG="${{ steps.get_latest_tag.outputs.LATEST_TAG }}"
+          BUMP_TYPE="${{ steps.bump_type.outputs.BUMP_TYPE }}"
+          
+          # Extract version numbers
+          VERSION=${LATEST_TAG#v}
+          MAJOR=$(echo $VERSION | cut -d. -f1)
+          MINOR=$(echo $VERSION | cut -d. -f2)
+          PATCH=$(echo $VERSION | cut -d. -f3)
+          
+          # Increment version based on bump type
+          if [ "$BUMP_TYPE" = "major" ]; then
+            MAJOR=$((MAJOR + 1))
+            MINOR=0
+            PATCH=0
+          elif [ "$BUMP_TYPE" = "minor" ]; then
+            MINOR=$((MINOR + 1))
+            PATCH=0
+          else
+            PATCH=$((PATCH + 1))
+          fi
+          
+          NEW_VERSION="v$MAJOR.$MINOR.$PATCH"
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
+          
+          # Update package.json version
+          npm version $MAJOR.$MINOR.$PATCH --no-git-tag-version
+
+      - name: Create tag
+        id: create_tag
+        run: |
+          NEW_VERSION="${{ steps.bump_version.outputs.NEW_VERSION }}"
+          
+          # Configure git user
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Commit updated package.json
+          git add package.json
+          git commit -m "[skip ci] Bump version to $NEW_VERSION"
+          
+          # Create and push tag
+          git tag -a $NEW_VERSION -m "Release $NEW_VERSION"
+          git push origin main --tags
+          git push
