@@ -5,6 +5,7 @@
     "lib": ["ES2023"],
     "module": "Node16",
     "strict": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
