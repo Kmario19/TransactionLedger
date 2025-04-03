@@ -8,7 +8,7 @@ describe('Transaction Create Schema', () => {
     const validDebit = {
       type: 'debit',
       date: '2023-01-01',
-      amount: 100,
+      cost: 100,
       description: 'Test debit transaction',
     };
     expect(() => body.parse(validDebit)).not.toThrow(z.ZodError);
@@ -18,28 +18,28 @@ describe('Transaction Create Schema', () => {
     const validCredit = {
       type: 'credit',
       date: '2023-01-01',
-      cost: 50,
+      amount: 50,
       description: 'Test credit transaction',
     };
     expect(() => body.parse(validCredit)).not.toThrow(z.ZodError);
   });
 
-  it('should throw an error if amount is missing for debit transaction', () => {
+  it('should throw an error if cost is missing for debit transaction', () => {
     const invalidDebit = {
       type: 'debit',
       date: '2023-01-01',
       description: 'Invalid debit transaction',
     };
-    expect(() => body.parse(invalidDebit)).toThrow("'amount' is required for debit transactions");
+    expect(() => body.parse(invalidDebit)).toThrow("'cost' is required for debit transactions");
   });
 
-  it('should throw an error if cost is missing for credit transaction', () => {
+  it('should throw an error if amount is missing for credit transaction', () => {
     const invalidCredit = {
       type: 'credit',
       date: '2023-01-01',
       description: 'Invalid credit transaction',
     };
-    expect(() => body.parse(invalidCredit)).toThrow("'cost' is required for credit transactions");
+    expect(() => body.parse(invalidCredit)).toThrow("'amount' is required for credit transactions");
   });
 
   it('should throw an error if date is not in ISO format', () => {
