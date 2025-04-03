@@ -92,6 +92,23 @@ http://localhost:<PORT>/docs
 
 Replace `<PORT>` with the configured port in your `.env` file.
 
+## Debugging with Visual Studio Code
+
+To launch and debug the API using Visual Studio Code, follow these steps:
+
+1. Open the project in Visual Studio Code.
+2. Ensure that all dependencies are installed by running:
+
+   ```bash
+   pnpm install
+   ```
+
+3. Open the "Run and Debug" view in VS Code by clicking on the debug icon in the Activity Bar on the side of the window or pressing `Ctrl+Shift+D`.
+4. Select the "Transaction Ledger API" configuration from the dropdown menu. This configuration is already set up in the `.vscode/launch.json` file to run the application using `pnpm dev`.
+5. Click the green play button or press `F5` to start debugging.
+
+This will launch the API in development mode, allowing you to set breakpoints, inspect variables, and step through the code.
+
 ## Deployment
 
 The project uses GitHub Actions for CI/CD. The workflow builds, tests, and packages the application for release when tags are pushed.
