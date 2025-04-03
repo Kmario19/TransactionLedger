@@ -95,3 +95,5 @@ jobs:
           git tag -a $NEW_VERSION -m "Release $NEW_VERSION"
           git push origin main --tags
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
