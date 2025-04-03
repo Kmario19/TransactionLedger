@@ -1,16 +1,22 @@
 name: Continuous Deployment
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Version Bump and Tag"]
+    types:
+      - completed
     branches:
       - main
+  push:
     tags:
       - 'v*.*.*'
 
 jobs:
-  build-and-release:
+  deploy:
     name: Build and Release
     runs-on: ubuntu-latest
+    # Only run this job when the workflow_run event is triggered by a successful bump-version workflow
+    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') }}
 
     steps:
       - name: Checkout code
@@ -52,20 +58,28 @@ jobs:
       - name: Build project
         run: pnpm build
 
+      - name: Get version
+        id: get_version
+        run: |
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            # If triggered by a tag push
+            echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          else
+            # If triggered by workflow_run
+            LATEST_TAG=$(git describe --tags --abbrev=0)
+            echo "VERSION=${LATEST_TAG#v}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Create distribution archive
         run: |
-          PACKAGE_VERSION=$(node -p "require('./package.json').version")
-          tar -czf TransactionLedger-$PACKAGE_VERSION.tar.gz dist package.json README.md
-
-      - name: Get version from tag
-        id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          VERSION="${{ steps.get_version.outputs.VERSION }}"
+          tar -czf TransactionLedger-$VERSION.tar.gz dist package.json README.md
 
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref }}
+          tag_name: v${{ steps.get_version.outputs.VERSION }}
           name: Release ${{ steps.get_version.outputs.VERSION }}
           draft: false
           prerelease: false
