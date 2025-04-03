@@ -1,6 +1,6 @@
 {
   "name": "transaction-ledger",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A ledger application for managing bank account transactions",
   "main": "index.ts",
   "scripts": {
@@ -16,7 +16,9 @@
     "watch": "tsx watch --exclude src/**/*.test.ts src/ src/index.ts",
     "seed": "tsx src/seeds/seed.ts"
   },
-  "keywords": ["botkeeper"],
+  "keywords": [
+    "botkeeper"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
