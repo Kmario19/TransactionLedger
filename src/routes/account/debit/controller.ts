@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import { Account } from '@/models/Account';
 import { Transaction, TransactionType } from '@/models/Transaction';
-import { StatusCodes } from 'http-status-codes';
 
 export default async (req: Request, res: Response) => {
   const { accountId } = req.params;

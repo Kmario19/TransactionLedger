@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
-import { Transaction, TransactionType } from '@/models/Transaction';
-import { Account } from '@/models/Account';
 import { StatusCodes } from 'http-status-codes';
+import { Account } from '@/models/Account';
+import { Transaction, TransactionType } from '@/models/Transaction';
 
 export default async function deleteTransactionController(req: Request, res: Response) {
   const session = await Transaction.startSession();

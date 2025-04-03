@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
-import editTransactionController from './controller';
-import { Transaction, TransactionType } from '@/models/Transaction';
-import { Account } from '@/models/Account';
 import { StatusCodes } from 'http-status-codes';
+import { Account } from '@/models/Account';
+import { Transaction, TransactionType } from '@/models/Transaction';
+import editTransactionController from './controller';
 
 describe('editTransactionController', () => {
   let req: Partial<Request>;

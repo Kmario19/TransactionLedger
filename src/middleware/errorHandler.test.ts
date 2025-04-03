@@ -1,6 +1,6 @@
-import type { Request, Response, NextFunction } from 'express';
-import errorHandler from './errorHandler';
+import type { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import errorHandler from './errorHandler';
 
 describe('Error Handler Middleware', () => {
   let mockRequest: Partial<Request>;

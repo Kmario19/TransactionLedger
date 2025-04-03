@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
-import createTransactionController from './controller';
-import { Transaction } from '@/models/Transaction';
 import { StatusCodes } from 'http-status-codes';
+import { Transaction } from '@/models/Transaction';
+import createTransactionController from './controller';
 
 describe('createTransactionController', () => {
   let req: Partial<Request>;

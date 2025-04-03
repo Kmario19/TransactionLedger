@@ -1,8 +1,8 @@
 import type { Response } from 'express';
-import creditAccountController, { type Request } from './controller';
+import { StatusCodes } from 'http-status-codes';
 import { Account } from '@/models/Account';
 import { Transaction, TransactionType } from '@/models/Transaction';
-import { StatusCodes } from 'http-status-codes';
+import creditAccountController, { type Request } from './controller';
 
 describe('creditAccountController', () => {
   let req: Partial<Request>;

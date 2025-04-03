@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
-import debitAccountController from './controller';
+import { StatusCodes } from 'http-status-codes';
 import { Account } from '@/models/Account';
 import { Transaction, TransactionType } from '@/models/Transaction';
-import { StatusCodes } from 'http-status-codes';
+import debitAccountController from './controller';
 
 describe('debitAccountController', () => {
   let req: Partial<Request>;

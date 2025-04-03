@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
-import editAccountController from './controller';
-import { Account } from '@/models/Account';
 import { StatusCodes } from 'http-status-codes';
+import { Account } from '@/models/Account';
+import editAccountController from './controller';
 
 describe('editAccountController', () => {
   let req: Partial<Request>;

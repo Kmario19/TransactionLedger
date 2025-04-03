@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import createAccountController from './controller';
 import { Account } from '@/models/Account';
+import createAccountController from './controller';
 
 describe('createAccountController', () => {
   let req: Partial<Request>;

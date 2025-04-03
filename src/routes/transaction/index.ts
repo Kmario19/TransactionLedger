@@ -3,9 +3,9 @@ import schemaValidator from '@/middleware/schemaValidator';
 import validate from '@/middleware/schemaValidator';
 
 import create from './create';
-import list from './list';
-import edit from './edit';
 import deleteT from './delete';
+import edit from './edit';
+import list from './list';
 
 const router = Router();
 

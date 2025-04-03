@@ -1,5 +1,5 @@
-import schema from './schema';
 import { z } from 'zod';
+import schema from './schema';
 
 describe('Transaction list schema', () => {
   it('should use default values when not provided', () => {
