@@ -18,6 +18,7 @@ describe('debitAccountController', () => {
   });
 
   beforeEach(() => {
+    jest.clearAllMocks();
     req = {
       params: { accountId: 'acc123' },
       body: { cost: 200, date: '2025-04-02' },
@@ -50,7 +51,7 @@ describe('debitAccountController', () => {
       cost: debitCost,
     };
 
-    Account.findById = jest.fn().mockResolvedValueOnce(mockAccount);
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockAccount) });
     Transaction.create = jest.fn().mockResolvedValueOnce(mockTransaction);
 
     await debitAccountController(req as Request, res as Response);
@@ -78,7 +79,7 @@ describe('debitAccountController', () => {
   });
 
   it('should return 404 if account is not found', async () => {
-    Account.findById = jest.fn().mockResolvedValueOnce(null);
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(null) });
 
     await debitAccountController(req as Request, res as Response);
 
@@ -99,7 +100,7 @@ describe('debitAccountController', () => {
       balance: currentBalance,
     };
 
-    Account.findById = jest.fn().mockResolvedValueOnce(mockAccount);
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockAccount) });
 
     await debitAccountController(req as Request, res as Response);
 
@@ -112,14 +113,9 @@ describe('debitAccountController', () => {
   });
 
   it('should handle errors and abort transaction', async () => {
-    Transaction.startSession = jest.fn().mockReturnValue({
-      startTransaction: jest.fn(),
-      commitTransaction: jest.fn(),
-      abortTransaction: jest.fn(),
-      endSession: jest.fn(),
-    });
-
-    Account.findById = jest.fn().mockRejectedValueOnce(new Error('Database error'));
+    Account.findById = jest
+      .fn()
+      .mockReturnValueOnce({ session: jest.fn().mockRejectedValueOnce(new Error('Database error')) });
 
     await expect(debitAccountController(req as Request, res as Response)).rejects.toThrow('Database error');
   });

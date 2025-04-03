@@ -11,7 +11,7 @@ export default async function editTransactionController(req: Request, res: Respo
   session.startTransaction();
 
   try {
-    const transaction = await Transaction.findById(transactionId);
+    const transaction = await Transaction.findById(transactionId).session(session);
     if (!transaction) {
       await session.abortTransaction();
       res.status(StatusCodes.NOT_FOUND).json({
@@ -20,7 +20,7 @@ export default async function editTransactionController(req: Request, res: Respo
       return;
     }
 
-    const account = await Account.findById(transaction.account);
+    const account = await Account.findById(transaction.account).session(session);
     if (!account) {
       await session.abortTransaction();
       res.status(StatusCodes.NOT_FOUND).json({

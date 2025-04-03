@@ -50,7 +50,7 @@ describe('creditAccountController', () => {
       amount: creditAmount,
     };
 
-    Account.findById = jest.fn().mockResolvedValueOnce(mockAccount);
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockAccount) });
     Transaction.create = jest.fn().mockResolvedValueOnce(mockTransaction);
 
     await creditAccountController(req as Request, res as Response);
@@ -78,7 +78,7 @@ describe('creditAccountController', () => {
   });
 
   it('should return 404 if account is not found', async () => {
-    Account.findById = jest.fn().mockResolvedValueOnce(null);
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(null) });
 
     await creditAccountController(req as Request, res as Response);
 
@@ -91,7 +91,9 @@ describe('creditAccountController', () => {
   });
 
   it('should handle errors and abort transaction', async () => {
-    Account.findById = jest.fn().mockRejectedValueOnce(new Error('Database error'));
+    Account.findById = jest
+      .fn()
+      .mockReturnValueOnce({ session: jest.fn().mockRejectedValueOnce(new Error('Database error')) });
 
     await expect(creditAccountController(req as Request, res as Response)).rejects.toThrow('Database error');
   });

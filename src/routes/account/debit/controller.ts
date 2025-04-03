@@ -11,7 +11,7 @@ export default async (req: Request, res: Response) => {
   session.startTransaction();
 
   try {
-    const account = await Account.findById(accountId);
+    const account = await Account.findById(accountId).session(session);
     if (!account) {
       await session.abortTransaction();
       res.status(StatusCodes.NOT_FOUND).json({ error: 'Account not found' });

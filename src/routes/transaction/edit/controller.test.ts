@@ -18,6 +18,7 @@ describe('editTransactionController', () => {
   });
 
   beforeEach(() => {
+    jest.clearAllMocks();
     req = {
       params: { transactionId: 'txn123' },
       body: { date: '2025-04-02', amount: 500 },
@@ -59,8 +60,8 @@ describe('editTransactionController', () => {
       }),
     };
 
-    Transaction.findById = jest.fn().mockResolvedValueOnce(mockTransaction);
-    Account.findById = jest.fn().mockResolvedValueOnce(mockAccount);
+    Transaction.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockTransaction) });
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockAccount) });
 
     await editTransactionController(req as Request, res as Response);
 
@@ -109,8 +110,8 @@ describe('editTransactionController', () => {
       }),
     };
 
-    Transaction.findById = jest.fn().mockResolvedValueOnce(mockTransaction);
-    Account.findById = jest.fn().mockResolvedValueOnce(mockAccount);
+    Transaction.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockTransaction) });
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockAccount) });
 
     await editTransactionController(req as Request, res as Response);
 
@@ -124,7 +125,7 @@ describe('editTransactionController', () => {
   });
 
   it('should return 404 if transaction is not found', async () => {
-    Transaction.findById = jest.fn().mockResolvedValueOnce(null);
+    Transaction.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(null) });
 
     await editTransactionController(req as Request, res as Response);
 
@@ -144,8 +145,8 @@ describe('editTransactionController', () => {
       account: 'acc123',
     };
 
-    Transaction.findById = jest.fn().mockResolvedValueOnce(mockTransaction);
-    Account.findById = jest.fn().mockResolvedValueOnce(null);
+    Transaction.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockTransaction) });
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(null) });
 
     await editTransactionController(req as Request, res as Response);
 
@@ -176,8 +177,8 @@ describe('editTransactionController', () => {
       balance: currentBalance,
     };
 
-    Transaction.findById = jest.fn().mockResolvedValueOnce(mockTransaction);
-    Account.findById = jest.fn().mockResolvedValueOnce(mockAccount);
+    Transaction.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockTransaction) });
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockAccount) });
     req.body.cost = newTransactionAmount;
 
     await editTransactionController(req as Request, res as Response);
@@ -207,8 +208,8 @@ describe('editTransactionController', () => {
       balance: currentBalance,
     };
 
-    Transaction.findById = jest.fn().mockResolvedValueOnce(mockTransaction);
-    Account.findById = jest.fn().mockResolvedValueOnce(mockAccount);
+    Transaction.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockTransaction) });
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockAccount) });
     req.body.cost = newTransactionAmount;
 
     await editTransactionController(req as Request, res as Response);
@@ -249,8 +250,8 @@ describe('editTransactionController', () => {
       }),
     };
 
-    Transaction.findById = jest.fn().mockResolvedValueOnce(mockTransaction);
-    Account.findById = jest.fn().mockResolvedValueOnce(mockAccount);
+    Transaction.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockTransaction) });
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockAccount) });
     req.body.cost = newTransactionAmount;
 
     await editTransactionController(req as Request, res as Response);
@@ -268,7 +269,9 @@ describe('editTransactionController', () => {
   });
 
   it('should handle errors and abort transaction', async () => {
-    Transaction.findById = jest.fn().mockRejectedValueOnce(new Error('Database error'));
+    Transaction.findById = jest
+      .fn()
+      .mockReturnValueOnce({ session: jest.fn().mockRejectedValueOnce(new Error('Database error')) });
 
     await expect(editTransactionController(req as Request, res as Response)).rejects.toThrow('Database error');
   });
