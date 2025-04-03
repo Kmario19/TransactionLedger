@@ -1,10 +1,9 @@
 # Transaction Ledger
 
+![License](https://img.shields.io/badge/license-MIT-blue)
 ![Node.js](https://img.shields.io/badge/node-v22-brightgreen)
 ![pnpm](https://img.shields.io/badge/pnpm-v9-blue)
 ![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
-![Build Status](https://img.shields.io/github/actions/workflow/status/username/repo/ci.yml)
-![License](https://img.shields.io/badge/license-MIT-blue)
 
 A ledger application for managing bank account transactions, built with TypeScript and Express.js.
 
