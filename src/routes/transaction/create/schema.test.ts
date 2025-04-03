@@ -62,13 +62,13 @@ describe('Transaction Create Schema', () => {
     expect(() => body.parse(longDescription)).toThrow();
   });
 
-  it('should throw an error if accountId is not a valid UUID', () => {
+  it('should throw an error if accountId is not a valid document id', () => {
     const invalidAccountId = {
       type: 'debit',
       date: '2023-01-01',
       amount: 100,
       description: 'Invalid accountId',
-      accountId: 'not-a-uuid',
+      accountId: 'not-a-mongo-id',
     };
     expect(() => body.parse(invalidAccountId)).toThrow(z.ZodError);
   });
