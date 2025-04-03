@@ -16,7 +16,7 @@
     "watch": "tsx watch --exclude src/**/*.test.ts src/ src/index.ts",
     "seed": "tsx src/seeds/seed.ts"
   },
-  "keywords": [],
+  "keywords": ["botkeeper"],
   "author": "",
   "license": "ISC",
   "dependencies": {
