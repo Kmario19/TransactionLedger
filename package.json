@@ -1,6 +1,6 @@
 {
   "name": "transaction-ledger",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A ledger application for managing bank account transactions",
   "main": "index.ts",
   "scripts": {
