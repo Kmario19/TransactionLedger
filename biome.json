@@ -24,7 +24,8 @@
     "lineEnding": "lf"
   },
   "organizeImports": {
-    "enabled": true
+    "enabled": true,
+    "ignore": ["src/index.ts"]
   },
   "linter": {
     "enabled": true,
