@@ -11,21 +11,38 @@ export default async (req: Request, res: Response) => {
   const { accountId } = req.params;
   const { amount, date } = req.body;
 
-  const account = await Account.findById(accountId);
-  if (!account) {
-    res.status(StatusCodes.NOT_FOUND).json({ error: 'Account not found' });
-    return;
+  const session = await Account.startSession();
+  session.startTransaction();
+
+  try {
+    const account = await Account.findById(accountId);
+    if (!account) {
+      await session.abortTransaction();
+      res.status(StatusCodes.NOT_FOUND).json({ error: 'Account not found' });
+      return;
+    }
+
+    const transaction = await Transaction.create(
+      [
+        {
+          amount,
+          date,
+          type: TransactionType.credit,
+          account: accountId,
+        },
+      ],
+      { session }
+    );
+
+    account.balance += amount;
+    await account.save({ session });
+
+    await session.commitTransaction();
+    res.status(StatusCodes.CREATED).json({ account, transaction });
+  } catch (error) {
+    await session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
   }
-
-  const transaction = await Transaction.create({
-    amount,
-    date,
-    type: TransactionType.credit,
-    account: accountId,
-  });
-
-  account.balance += amount;
-  await account.save();
-
-  res.status(StatusCodes.CREATED).json({ account, transaction });
 };

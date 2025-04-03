@@ -8,6 +8,15 @@ describe('editTransactionController', () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
 
+  beforeAll(() => {
+    Transaction.startSession = jest.fn().mockReturnValue({
+      startTransaction: jest.fn(),
+      commitTransaction: jest.fn(),
+      abortTransaction: jest.fn(),
+      endSession: jest.fn(),
+    });
+  });
+
   beforeEach(() => {
     req = {
       params: { transactionId: 'txn123' },
@@ -256,5 +265,11 @@ describe('editTransactionController', () => {
         }),
       })
     );
+  });
+
+  it('should handle errors and abort transaction', async () => {
+    Transaction.findById = jest.fn().mockRejectedValueOnce(new Error('Database error'));
+
+    await expect(editTransactionController(req as Request, res as Response)).rejects.toThrow('Database error');
   });
 });
