@@ -36,15 +36,13 @@ export default async (req: Request, res: Response) => {
     }
 
     const transaction = await Transaction.create(
-      [
-        {
-          account: accountId,
-          amount,
-          cost,
-          date,
-          type,
-        },
-      ],
+      {
+        account: accountId,
+        amount,
+        cost,
+        date,
+        type,
+      },
       { session }
     );
 

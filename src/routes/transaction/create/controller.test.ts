@@ -56,13 +56,11 @@ describe('createTransactionController', () => {
 
     expect(mockAccount.save).toHaveBeenCalled();
     expect(Transaction.create).toHaveBeenCalledWith(
-      [
-        expect.objectContaining({
-          account: accountId,
-          type: TransactionType.credit,
-          amount: creditAmount,
-        }),
-      ],
+      expect.objectContaining({
+        account: accountId,
+        type: TransactionType.credit,
+        amount: creditAmount,
+      }),
       expect.any(Object)
     );
     expect(res.status).toHaveBeenCalledWith(StatusCodes.CREATED);
@@ -107,13 +105,11 @@ describe('createTransactionController', () => {
 
     expect(mockAccount.save).toHaveBeenCalled();
     expect(Transaction.create).toHaveBeenCalledWith(
-      [
-        expect.objectContaining({
-          account: accountId,
-          type: TransactionType.debit,
-          cost: debitCost,
-        }),
-      ],
+      expect.objectContaining({
+        account: accountId,
+        type: TransactionType.debit,
+        cost: debitCost,
+      }),
       expect.any(Object)
     );
     expect(res.status).toHaveBeenCalledWith(StatusCodes.CREATED);
