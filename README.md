@@ -1,5 +1,11 @@
 # Transaction Ledger
 
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Node.js](https://img.shields.io/badge/node-v22-brightgreen)
+![pnpm](https://img.shields.io/badge/pnpm-v9-blue)
+![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+![Build Status](https://img.shields.io/github/actions/workflow/status/Kmario19/TransactionLedger/ci.yml)
+
 A ledger application for managing bank account transactions, built with TypeScript and Express.js.
 
 ## Prerequisites
@@ -78,7 +84,7 @@ The project includes Docker configuration for containerized development and depl
 docker-compose up
 
 # Build and run just the application container
-docker build -t transaction-ledger .
+docker build -t transaction-ledger . 
 docker run -p 3000:3000 transaction-ledger
 ```
 
@@ -91,6 +97,23 @@ http://localhost:<PORT>/docs
 ```
 
 Replace `<PORT>` with the configured port in your `.env` file.
+
+## Debugging with Visual Studio Code
+
+To launch and debug the API using Visual Studio Code, follow these steps:
+
+1. Open the project in Visual Studio Code.
+2. Ensure that all dependencies are installed by running:
+
+   ```bash
+   pnpm install
+   ```
+
+3. Open the "Run and Debug" view in VS Code by clicking on the debug icon in the Activity Bar on the side of the window or pressing `Ctrl+Shift+D`.
+4. Select the "Transaction Ledger API" configuration from the dropdown menu. This configuration is already set up in the `.vscode/launch.json` file to run the application using `pnpm dev`.
+5. Click the green play button or press `F5` to start debugging.
+
+This will launch the API in development mode, allowing you to set breakpoints, inspect variables, and step through the code.
 
 ## Deployment
 
