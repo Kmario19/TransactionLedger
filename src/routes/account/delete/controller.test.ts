@@ -25,7 +25,7 @@ describe('deleteAccountController', () => {
 
   it('should delete the account and return 200 if no transactions exist', async () => {
     const accountId = '123';
-    req.params = { id: accountId };
+    req.params = { accountId };
 
     Account.findById = jest.fn().mockResolvedValueOnce({
       _id: accountId,
@@ -50,7 +50,7 @@ describe('deleteAccountController', () => {
   });
 
   it('should return 404 if account is not found', async () => {
-    req.params = { id: 'nonexistent' };
+    req.params = { accountId: 'nonexistent' };
 
     Account.findById = jest.fn().mockResolvedValueOnce(null);
 
@@ -66,7 +66,7 @@ describe('deleteAccountController', () => {
 
   it('should return 400 if account has existing transactions', async () => {
     const accountId = '123';
-    req.params = { id: accountId };
+    req.params = { accountId };
 
     Account.findById = jest.fn().mockResolvedValueOnce({
       _id: accountId,
@@ -87,7 +87,7 @@ describe('deleteAccountController', () => {
 
   it('should delete transactions if TRANSACTION_DELETE_POLICY is set to "cascade"', async () => {
     const accountId = '123';
-    req.params = { id: accountId };
+    req.params = { accountId };
     process.env.TRANSACTION_DELETE_POLICY = 'cascade';
 
     Account.findById = jest.fn().mockResolvedValueOnce({
@@ -104,7 +104,7 @@ describe('deleteAccountController', () => {
 
   it('should not delete transactions if TRANSACTION_DELETE_POLICY is set to "keep"', async () => {
     const accountId = '123';
-    req.params = { id: accountId };
+    req.params = { accountId };
     process.env.TRANSACTION_DELETE_POLICY = 'keep';
 
     Account.findById = jest.fn().mockResolvedValueOnce({
@@ -121,7 +121,7 @@ describe('deleteAccountController', () => {
 
   it('should return 400 if TRANSACTION_DELETE_POLICY is invalid', async () => {
     const accountId = '123';
-    req.params = { id: accountId };
+    req.params = { accountId };
     // @ts-ignore
     process.env.TRANSACTION_DELETE_POLICY = 'invalid_policy';
 
