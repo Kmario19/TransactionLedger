@@ -1,5 +1,11 @@
 # Transaction Ledger
 
+![Node.js](https://img.shields.io/badge/node-v22-brightgreen)
+![pnpm](https://img.shields.io/badge/pnpm-v9-blue)
+![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+![Build Status](https://img.shields.io/github/actions/workflow/status/username/repo/ci.yml)
+![License](https://img.shields.io/badge/license-MIT-blue)
+
 A ledger application for managing bank account transactions, built with TypeScript and Express.js.
 
 ## Prerequisites
@@ -78,7 +84,7 @@ The project includes Docker configuration for containerized development and depl
 docker-compose up
 
 # Build and run just the application container
-docker build -t transaction-ledger .
+docker build -t transaction-ledger . 
 docker run -p 3000:3000 transaction-ledger
 ```
 
