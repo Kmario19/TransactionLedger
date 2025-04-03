@@ -32,4 +32,6 @@ accountSchema.pre<IAccount>('save', function (next) {
   next();
 });
 
+accountSchema.index({ name: 1, balance: 1, createdAt: -1 });
+
 export const Account = mongoose.model<IAccount>('Account', accountSchema);
