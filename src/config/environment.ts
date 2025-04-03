@@ -16,4 +16,5 @@ export default () => {
   if (!env.success) {
     throw new Error(`Environment variable validation error: ${JSON.stringify(env.error.format(), null, 2)}`);
   }
+  return env.data;
 };
