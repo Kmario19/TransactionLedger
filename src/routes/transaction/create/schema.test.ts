@@ -1,5 +1,5 @@
-import schema from './schema';
 import { z } from 'zod';
+import schema from './schema';
 
 describe('Transaction Create Schema', () => {
   const { body } = schema;

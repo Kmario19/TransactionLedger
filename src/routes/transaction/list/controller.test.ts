@@ -1,6 +1,6 @@
+import { Transaction, TransactionType } from '@/models/Transaction';
 import type { Request, Response } from 'express';
 import listTransactionsController from './controller';
-import { Transaction, TransactionType } from '@/models/Transaction';
 
 describe('listTransactionsController', () => {
   let req: Partial<Request>;

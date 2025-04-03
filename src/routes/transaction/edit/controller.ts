@@ -1,6 +1,6 @@
-import type { Request, Response } from 'express';
-import { Transaction, TransactionType } from '@/models/Transaction';
 import { Account } from '@/models/Account';
+import { Transaction, TransactionType } from '@/models/Transaction';
+import type { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 export default async function editTransactionController(req: Request, res: Response) {

@@ -1,6 +1,6 @@
 import express from 'express';
-import transactionRoutes from './transaction';
 import accountRoutes from './account';
+import transactionRoutes from './transaction';
 
 const app = express();
 

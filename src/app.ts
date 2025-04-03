@@ -1,6 +1,6 @@
-import express from 'express';
-import apiRoutes from '@/routes';
 import errorHandler from '@/middleware/errorHandler';
+import apiRoutes from '@/routes';
+import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './../swagger.json';
 

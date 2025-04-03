@@ -1,8 +1,8 @@
+import { connectDB } from '@/config/database';
+import { Account, type IAccount } from '@/models/Account';
+import { type ITransaction, Transaction, TransactionType } from '@/models/Transaction';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { connectDB } from '@/config/database';
-import { type ITransaction, Transaction, TransactionType } from '@/models/Transaction';
-import { type IAccount, Account } from '@/models/Account';
 
 dotenv.config();
 

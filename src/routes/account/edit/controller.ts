@@ -1,5 +1,5 @@
-import type { Request, Response } from 'express';
 import { Account } from '@/models/Account';
+import type { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 export default async function editAccountController(req: Request, res: Response) {

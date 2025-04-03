@@ -1,6 +1,6 @@
-import type { Request, Response } from 'express';
 import { Account } from '@/models/Account';
 import { Transaction } from '@/models/Transaction';
+import type { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 export default async function deleteAccountController(req: Request, res: Response) {

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-import loadEnvironment from '@/config/environment';
 import { connectDB } from '@/config/database';
+import loadEnvironment from '@/config/environment';
 
 import app from './app';
 

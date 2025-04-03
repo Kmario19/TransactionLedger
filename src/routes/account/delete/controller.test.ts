@@ -1,8 +1,8 @@
-import type { Request, Response } from 'express';
-import deleteAccountController from './controller';
 import { Account } from '@/models/Account';
 import { Transaction } from '@/models/Transaction';
+import type { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import deleteAccountController from './controller';
 
 describe('deleteAccountController', () => {
   let req: Partial<Request>;
