@@ -1,8 +1,8 @@
-import { Account } from '@/models/Account';
-import { Transaction, TransactionType } from '@/models/Transaction';
 import type { Request as ExpressRequest, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import type { z } from 'zod';
+import { Account } from '@/models/Account';
+import { Transaction, TransactionType } from '@/models/Transaction';
 import type schema from './schema';
 
 export type Request = ExpressRequest<z.infer<typeof schema.params>, unknown, z.infer<typeof schema.body>>;

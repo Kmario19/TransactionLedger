@@ -1,5 +1,5 @@
-import { Transaction, TransactionType } from '@/models/Transaction';
 import type { Request, Response } from 'express';
+import { Transaction, TransactionType } from '@/models/Transaction';
 import listTransactionsController from './controller';
 
 describe('listTransactionsController', () => {

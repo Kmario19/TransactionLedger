@@ -10,5 +10,8 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "editor.formatOnSave": true,
-  "extensions.ignoreRecommendations": true
+  "extensions.ignoreRecommendations": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "always"
+  }
 }

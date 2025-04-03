@@ -1,7 +1,7 @@
-import { Account } from '@/models/Account';
-import { Transaction, TransactionType } from '@/models/Transaction';
 import type { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { Account } from '@/models/Account';
+import { Transaction, TransactionType } from '@/models/Transaction';
 import creditAccountController, { type Request } from './controller';
 
 describe('creditAccountController', () => {

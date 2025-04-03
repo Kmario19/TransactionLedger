@@ -1,7 +1,7 @@
-import { Account } from '@/models/Account';
-import { Transaction } from '@/models/Transaction';
 import type { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { Account } from '@/models/Account';
+import { Transaction } from '@/models/Transaction';
 import deleteAccountController from './controller';
 
 describe('deleteAccountController', () => {

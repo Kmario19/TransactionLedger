@@ -1,5 +1,5 @@
-import { Account } from '@/models/Account';
 import type { Request, Response } from 'express';
+import { Account } from '@/models/Account';
 import listAccountsController from './controller';
 
 describe('listAccountsController', () => {

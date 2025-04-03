@@ -1,7 +1,7 @@
-import { Transaction } from '@/models/Transaction';
-import type { ITransaction } from '@/models/Transaction';
 import type { Request, Response } from 'express';
 import type { FilterQuery } from 'mongoose';
+import type { ITransaction } from '@/models/Transaction';
+import { Transaction } from '@/models/Transaction';
 
 const listTransactionController = async (req: Request, res: Response) => {
   const {

@@ -1,6 +1,6 @@
-import { Transaction } from '@/models/Transaction';
 import type { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { Transaction } from '@/models/Transaction';
 import createTransactionController from './controller';
 
 describe('createTransactionController', () => {

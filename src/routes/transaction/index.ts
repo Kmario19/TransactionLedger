@@ -1,6 +1,6 @@
+import { Router } from 'express';
 import schemaValidator from '@/middleware/schemaValidator';
 import validate from '@/middleware/schemaValidator';
-import { Router } from 'express';
 
 import create from './create';
 import deleteT from './delete';

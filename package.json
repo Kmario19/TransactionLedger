@@ -17,7 +17,9 @@
     "seed": "tsx src/seeds/seed.ts",
     "prepare": "husky"
   },
-  "keywords": ["botkeeper"],
+  "keywords": [
+    "botkeeper"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -28,7 +30,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.0.0-beta.1",
     "@swc/core": "^1.11.16",
     "@swc/jest": "^0.2.37",
     "@types/express": "^5.0.1",

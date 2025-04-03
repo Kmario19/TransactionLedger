@@ -1,6 +1,6 @@
-import { Account } from '@/models/Account';
 import type { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { Account } from '@/models/Account';
 
 export default async function editAccountController(req: Request, res: Response) {
   try {

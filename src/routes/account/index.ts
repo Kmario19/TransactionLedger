@@ -1,5 +1,5 @@
-import schemaValidator from '@/middleware/schemaValidator';
 import express from 'express';
+import schemaValidator from '@/middleware/schemaValidator';
 
 import create from './create';
 import credit from './credit';

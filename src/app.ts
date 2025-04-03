@@ -1,7 +1,7 @@
-import errorHandler from '@/middleware/errorHandler';
-import apiRoutes from '@/routes';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
+import errorHandler from '@/middleware/errorHandler';
+import apiRoutes from '@/routes';
 import swaggerDocument from './../swagger.json';
 
 const app = express();
