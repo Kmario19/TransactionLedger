@@ -9,6 +9,7 @@ export default () => {
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
     MONGODB_URI: z.string().url(),
     TRANSACTION_DELETE_POLICY: z.enum(['keep', 'cascade', 'deny']).default('keep'),
+    API_KEYS: z.string().optional(),
   });
 
   const env = envSchema.safeParse(process.env);
