@@ -1,5 +1,5 @@
-import type { Request, Response } from 'express';
-import creditAccountController from './controller';
+import type { Response } from 'express';
+import creditAccountController, { type Request } from './controller';
 import { Account } from '@/models/Account';
 import { Transaction, TransactionType } from '@/models/Transaction';
 import { StatusCodes } from 'http-status-codes';
@@ -11,7 +11,7 @@ describe('creditAccountController', () => {
   beforeEach(() => {
     req = {
       params: { accountId: '123' },
-      body: { amount: 500 },
+      body: { amount: 500, date: '2025-04-02' },
     };
     res = {
       status: jest.fn().mockReturnThis(),
