@@ -100,6 +100,20 @@ http://localhost:<PORT>/docs
 
 Replace `<PORT>` with the configured port in your `.env` file.
 
+## API Authentication
+
+The API is secured using API keys. Each request must include a valid API key in the `x-api-key` header. The API keys are configured in the environment variable `API_KEYS` as a comma-separated list.
+
+### Example Request
+
+Include the `x-api-key` header in your request:
+
+```bash
+curl -X GET "http://localhost:<PORT>/transactions" -H "x-api-key: YOUR_API_KEY"
+```
+
+Replace `<PORT>` with the configured port in your `.env` file and `YOUR_API_KEY` with a valid API key.
+
 ## Debugging with Visual Studio Code
 
 To launch and debug the API using Visual Studio Code, follow these steps:
