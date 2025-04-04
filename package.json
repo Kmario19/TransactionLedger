@@ -1,6 +1,6 @@
 {
   "name": "transaction-ledger",
-  "version": "0.2.0",
+  "version": "0.5.3",
   "description": "A ledger application for managing bank account transactions",
   "main": "index.ts",
   "scripts": {
@@ -14,7 +14,8 @@
     "build": "tsup",
     "dev": "tsx src/index.ts",
     "watch": "tsx watch --exclude src/**/*.test.ts src/ src/index.ts",
-    "seed": "tsx src/seeds/seed.ts"
+    "seed": "tsx src/seeds/seed.ts",
+    "prepare": "husky"
   },
   "keywords": [
     "botkeeper"
@@ -24,12 +25,13 @@
   "dependencies": {
     "express": "^5.1.0",
     "http-status-codes": "^2.3.0",
+    "husky": "^9.1.7",
     "mongoose": "^8.13.1",
     "swagger-ui-express": "^5.0.1",
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.0.0-beta.1",
     "@swc/core": "^1.11.16",
     "@swc/jest": "^0.2.37",
     "@types/express": "^5.0.1",

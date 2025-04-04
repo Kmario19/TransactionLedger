@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { z } from 'zod';
 
 export default {
@@ -7,7 +8,12 @@ export default {
       limit: z.coerce.number().min(1).max(100).default(10),
       startDate: z.string().optional(),
       endDate: z.string().optional(),
-      accountId: z.string().uuid().optional(),
+      accountId: z
+        .string()
+        .refine(val => {
+          return mongoose.Types.ObjectId.isValid(val);
+        })
+        .optional(),
       type: z.enum(['debit', 'credit']).optional(),
       sortBy: z.enum(['date', 'amount', 'cost']).default('date'),
       sortOrder: z.enum(['asc', 'desc']).default('desc'),

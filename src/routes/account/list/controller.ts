@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
-import { Account } from '@/models/Account';
 import type { FilterQuery } from 'mongoose';
 import type { IAccount } from '@/models/Account';
+import { Account } from '@/models/Account';
 
 export default async function listAccountsController(req: Request, res: Response) {
   const { page = 1, limit = 10, search, minBalance, maxBalance, sortBy = 'createdAt', sortOrder = 'desc' } = req.query;

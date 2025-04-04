@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
-import { Transaction, TransactionType } from '@/models/Transaction';
-import { Account } from '@/models/Account';
 import { StatusCodes } from 'http-status-codes';
+import { Account } from '@/models/Account';
+import { Transaction, TransactionType } from '@/models/Transaction';
 
 export default async function deleteTransactionController(req: Request, res: Response) {
   const session = await Transaction.startSession();
@@ -11,7 +11,7 @@ export default async function deleteTransactionController(req: Request, res: Res
 
     const { transactionId } = req.params;
 
-    const transaction = await Transaction.findById(transactionId);
+    const transaction = await Transaction.findById(transactionId).session(session);
     if (!transaction) {
       await session.abortTransaction();
       res.status(StatusCodes.NOT_FOUND).json({
@@ -20,7 +20,7 @@ export default async function deleteTransactionController(req: Request, res: Res
       return;
     }
 
-    const account = await Account.findById(transaction.account);
+    const account = await Account.findById(transaction.account).session(session);
     if (!account) {
       await session.abortTransaction();
       res.status(StatusCodes.NOT_FOUND).json({

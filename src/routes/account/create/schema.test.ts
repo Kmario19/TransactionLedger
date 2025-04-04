@@ -1,5 +1,5 @@
-import schema from './schema';
 import { z } from 'zod';
+import schema from './schema';
 
 describe('Account create schema', () => {
   it('should succeed with valid data', () => {

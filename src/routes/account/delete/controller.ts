@@ -1,12 +1,12 @@
 import type { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import { Account } from '@/models/Account';
 import { Transaction } from '@/models/Transaction';
-import { StatusCodes } from 'http-status-codes';
 
 export default async function deleteAccountController(req: Request, res: Response) {
-  const { id } = req.params;
+  const { accountId } = req.params;
 
-  const account = await Account.findById(id);
+  const account = await Account.findById(accountId);
   if (!account) {
     res.status(StatusCodes.NOT_FOUND).json({
       error: 'Account not found',
@@ -16,10 +16,10 @@ export default async function deleteAccountController(req: Request, res: Respons
 
   switch (process.env.TRANSACTION_DELETE_POLICY) {
     case 'cascade':
-      await Transaction.deleteMany({ account: id });
+      await Transaction.deleteMany({ account: accountId });
       break;
     case 'deny': {
-      const hasTransactions = await Transaction.exists({ account: id });
+      const hasTransactions = await Transaction.exists({ account: accountId });
       if (hasTransactions) {
         res.status(StatusCodes.BAD_REQUEST).json({
           error: 'Cannot delete account with existing transactions',
@@ -38,7 +38,7 @@ export default async function deleteAccountController(req: Request, res: Respons
       return;
   }
 
-  await Account.findByIdAndDelete(id);
+  await Account.findByIdAndDelete(accountId);
 
   res.status(StatusCodes.OK).json({
     message: 'Account deleted successfully',

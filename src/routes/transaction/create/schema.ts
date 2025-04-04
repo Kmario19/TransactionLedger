@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { z } from 'zod';
 
 export default {
@@ -8,19 +9,24 @@ export default {
       amount: z.number().positive().optional(),
       cost: z.number().positive().optional(),
       description: z.string().max(255),
-      accountId: z.string().uuid().optional(),
+      accountId: z
+        .string()
+        .refine(val => {
+          return mongoose.Types.ObjectId.isValid(val);
+        })
+        .optional(),
     })
     .superRefine((data, ctx) => {
-      if (data.type === 'debit' && data.amount === undefined) {
+      if (data.type === 'debit' && data.cost === undefined) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: `'amount' is required for debit transactions`,
+          message: `'cost' is required for debit transactions`,
         });
       }
-      if (data.type === 'credit' && data.cost === undefined) {
+      if (data.type === 'credit' && data.amount === undefined) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: `'cost' is required for credit transactions`,
+          message: `'amount' is required for credit transactions`,
         });
       }
     }),

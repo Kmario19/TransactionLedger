@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { Transaction, TransactionType } from './Transaction';
+import mongoose from 'mongoose';
 import { Account, type IAccount } from './Account';
+import { Transaction, TransactionType } from './Transaction';
 
 describe('Transaction Model', () => {
   let mongoServer: MongoMemoryServer;

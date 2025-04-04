@@ -252,6 +252,9 @@
           "201": {
             "description": "Account created successfully."
           },
+          "409": {
+            "description": "Conflict - Account with this name already exists."
+          },
           "400": {
             "description": "Bad request - Invalid input data."
           },

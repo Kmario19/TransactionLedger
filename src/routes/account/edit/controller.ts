@@ -1,34 +1,32 @@
 import type { Request, Response } from 'express';
-import { Account } from '@/models/Account';
 import { StatusCodes } from 'http-status-codes';
+import { Account } from '@/models/Account';
 
 export default async function editAccountController(req: Request, res: Response) {
-  try {
-    const { id } = req.params;
-    const { name } = req.body;
+  const { accountId } = req.params;
+  const { name } = req.body;
 
-    const account = await Account.findById(id);
-    if (!account) {
-      res.status(StatusCodes.NOT_FOUND).json({
-        error: 'Account not found',
-      });
-      return;
-    }
-
-    account.name = name;
-    await account.save();
-
-    res.json({
-      message: 'Account updated successfully',
-      account,
+  const account = await Account.findById(accountId);
+  if (!account) {
+    res.status(StatusCodes.NOT_FOUND).json({
+      error: 'Account not found',
     });
-  } catch (error) {
-    if ((error as { code: number }).code === 11000) {
-      res.status(StatusCodes.CONFLICT).json({
-        error: 'Account name already exists',
-      });
-      return;
-    }
-    throw error;
+    return;
   }
+
+  const existingAccount = await Account.findOne({ name, _id: { $ne: accountId } });
+  if (existingAccount) {
+    res.status(StatusCodes.CONFLICT).json({
+      error: 'Account name already exists',
+    });
+    return;
+  }
+
+  account.name = name;
+  await account.save();
+
+  res.json({
+    message: 'Account updated successfully',
+    account,
+  });
 }

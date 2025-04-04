@@ -23,6 +23,8 @@ A ledger application for managing bank account transactions, built with TypeScri
 - [Jest](https://jestjs.io/) - Testing framework
 - [Biome](https://biomejs.dev/) - Code formatter and linter
 - [tsup](https://github.com/egoist/tsup) - TypeScript bundler
+- [Husky](https://typicode.github.io/husky/) - Git hooks management
+- [tsx](https://github.com/esbuild-kit/tsx) - TypeScript execution environment
 
 ## Available Scripts
 

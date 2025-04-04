@@ -1,5 +1,5 @@
-import schema from './schema';
 import { z } from 'zod';
+import schema from './schema';
 
 describe('Account credit schema', () => {
   it('should validate valid parameters', () => {

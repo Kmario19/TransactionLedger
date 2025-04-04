@@ -1,7 +1,7 @@
 import express from 'express';
-import transactionRoutes from './transaction';
-import accountRoutes from './account';
 import apiKeyValidator from '@/middleware/apiKeyValidator';
+import accountRoutes from './account';
+import transactionRoutes from './transaction';
 
 const app = express();
 

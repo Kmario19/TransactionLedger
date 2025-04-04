@@ -1,17 +1,27 @@
 import type { Request, Response } from 'express';
-import debitAccountController from './controller';
+import { StatusCodes } from 'http-status-codes';
 import { Account } from '@/models/Account';
 import { Transaction, TransactionType } from '@/models/Transaction';
-import { StatusCodes } from 'http-status-codes';
+import debitAccountController from './controller';
 
 describe('debitAccountController', () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
 
+  beforeAll(() => {
+    Account.startSession = jest.fn().mockReturnValue({
+      startTransaction: jest.fn(),
+      commitTransaction: jest.fn(),
+      abortTransaction: jest.fn(),
+      endSession: jest.fn(),
+    });
+  });
+
   beforeEach(() => {
+    jest.clearAllMocks();
     req = {
-      params: { accountId: '123' },
-      body: { cost: 300, date: '2025-04-02' },
+      params: { accountId: 'acc123' },
+      body: { cost: 200, date: '2025-04-02' },
     };
     res = {
       status: jest.fn().mockReturnThis(),
@@ -19,42 +29,43 @@ describe('debitAccountController', () => {
     };
   });
 
-  it('should debit the account and return 200', async () => {
-    const accountId = '123';
-    const debitCost = 300;
+  it('should debit the account and return the updated account and transaction', async () => {
+    const accountId = 'acc123';
     const currentBalance = 1000;
+    const debitCost = 200;
     const newBalance = currentBalance - debitCost;
 
     const mockAccount = {
       _id: accountId,
-      name: 'Test Account',
       balance: currentBalance,
       save: jest.fn().mockResolvedValueOnce({
         _id: accountId,
-        name: 'Test Account',
         balance: newBalance,
       }),
     };
 
-    Account.findById = jest.fn().mockResolvedValueOnce(mockAccount);
-    Transaction.create = jest.fn().mockResolvedValueOnce({
+    const mockTransaction = {
       _id: 'txn123',
       account: accountId,
       type: TransactionType.debit,
       cost: debitCost,
-      balance: newBalance,
-      description: 'Account debit',
-    });
+    };
+
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockAccount) });
+    Transaction.create = jest.fn().mockResolvedValueOnce(mockTransaction);
 
     await debitAccountController(req as Request, res as Response);
 
     expect(mockAccount.save).toHaveBeenCalled();
     expect(Transaction.create).toHaveBeenCalledWith(
-      expect.objectContaining({
-        account: accountId,
-        type: TransactionType.debit,
-        cost: debitCost,
-      })
+      [
+        expect.objectContaining({
+          account: accountId,
+          type: TransactionType.debit,
+          cost: debitCost,
+        }),
+      ],
+      expect.any(Object)
     );
     expect(res.status).toHaveBeenCalledWith(StatusCodes.CREATED);
     expect(res.json).toHaveBeenCalledWith(
@@ -62,12 +73,13 @@ describe('debitAccountController', () => {
         account: expect.objectContaining({
           balance: newBalance,
         }),
+        transaction: mockTransaction,
       })
     );
   });
 
   it('should return 404 if account is not found', async () => {
-    Account.findById = jest.fn().mockResolvedValueOnce(null);
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(null) });
 
     await debitAccountController(req as Request, res as Response);
 
@@ -80,18 +92,15 @@ describe('debitAccountController', () => {
   });
 
   it('should return 400 if insufficient funds', async () => {
-    const accountId = '123';
-    const debitCost = 1500;
-    const currentBalance = 1000;
+    const accountId = 'acc123';
+    const currentBalance = 100;
 
     const mockAccount = {
       _id: accountId,
-      name: 'Test Account',
       balance: currentBalance,
     };
 
-    Account.findById = jest.fn().mockResolvedValueOnce(mockAccount);
-    req.body = { cost: debitCost };
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockAccount) });
 
     await debitAccountController(req as Request, res as Response);
 
@@ -101,5 +110,13 @@ describe('debitAccountController', () => {
         error: 'Insufficient funds',
       })
     );
+  });
+
+  it('should handle errors and abort transaction', async () => {
+    Account.findById = jest
+      .fn()
+      .mockReturnValueOnce({ session: jest.fn().mockRejectedValueOnce(new Error('Database error')) });
+
+    await expect(debitAccountController(req as Request, res as Response)).rejects.toThrow('Database error');
   });
 });

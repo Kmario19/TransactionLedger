@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
-import editAccountController from './controller';
-import { Account } from '@/models/Account';
 import { StatusCodes } from 'http-status-codes';
+import { Account } from '@/models/Account';
+import editAccountController from './controller';
 
 describe('editAccountController', () => {
   let req: Partial<Request>;
@@ -30,6 +30,7 @@ describe('editAccountController', () => {
         balance: 100,
       }),
     });
+    Account.findOne = jest.fn().mockResolvedValueOnce(null);
 
     await editAccountController(req as Request, res as Response);
 
@@ -66,9 +67,12 @@ describe('editAccountController', () => {
       _id: '123',
       name: 'Old Account',
       balance: 100,
-      save: jest.fn().mockRejectedValueOnce({
-        code: 11000,
-      }),
+      save: jest.fn(),
+    });
+
+    Account.findOne = jest.fn().mockResolvedValueOnce({
+      _id: '456',
+      name: 'Existing Account',
     });
 
     await editAccountController(req as Request, res as Response);

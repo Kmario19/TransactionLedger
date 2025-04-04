@@ -1,5 +1,5 @@
-import schema from './schema';
 import { z } from 'zod';
+import schema from './schema';
 
 describe('Account edit schema', () => {
   it('should validate valid parameters and body', () => {

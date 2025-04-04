@@ -1,6 +1,6 @@
-import type { Request, Response, NextFunction } from 'express';
-import { z } from 'zod';
+import type { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { z } from 'zod';
 import schemaValidator from './schemaValidator';
 
 describe('Schema Validator Middleware', () => {

@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
-import deleteTransactionController from './controller';
-import { Transaction, TransactionType } from '@/models/Transaction';
-import { Account } from '@/models/Account';
 import { StatusCodes } from 'http-status-codes';
+import { Account } from '@/models/Account';
+import { Transaction, TransactionType } from '@/models/Transaction';
+import deleteTransactionController from './controller';
 
 describe('deleteTransactionController', () => {
   let req: Partial<Request>;
@@ -50,8 +50,8 @@ describe('deleteTransactionController', () => {
       }),
     };
 
-    Transaction.findById = jest.fn().mockResolvedValueOnce(mockTransaction);
-    Account.findById = jest.fn().mockResolvedValueOnce(mockAccount);
+    Transaction.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockTransaction) });
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockAccount) });
     Transaction.findByIdAndDelete = jest.fn().mockReturnValue({
       session: jest.fn().mockResolvedValueOnce(null),
     });
@@ -90,8 +90,8 @@ describe('deleteTransactionController', () => {
       }),
     };
 
-    Transaction.findById = jest.fn().mockResolvedValueOnce(mockTransaction);
-    Account.findById = jest.fn().mockResolvedValueOnce(mockAccount);
+    Transaction.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockTransaction) });
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockAccount) });
     Transaction.findByIdAndDelete = jest.fn().mockReturnValue({
       session: jest.fn().mockResolvedValueOnce(null),
     });
@@ -130,8 +130,8 @@ describe('deleteTransactionController', () => {
       }),
     };
 
-    Transaction.findById = jest.fn().mockResolvedValueOnce(mockTransaction);
-    Account.findById = jest.fn().mockResolvedValueOnce(mockAccount);
+    Transaction.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockTransaction) });
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockAccount) });
     Transaction.findByIdAndDelete = jest.fn().mockReturnValue({
       session: jest.fn().mockResolvedValueOnce(null),
     });
@@ -170,8 +170,8 @@ describe('deleteTransactionController', () => {
       }),
     };
 
-    Transaction.findById = jest.fn().mockResolvedValueOnce(mockTransaction);
-    Account.findById = jest.fn().mockResolvedValueOnce(mockAccount);
+    Transaction.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockTransaction) });
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockAccount) });
     Transaction.findByIdAndDelete = jest.fn().mockReturnValue({
       session: jest.fn().mockResolvedValueOnce(null),
     });
@@ -188,7 +188,7 @@ describe('deleteTransactionController', () => {
   });
 
   it('should return 404 if transaction is not found', async () => {
-    Transaction.findById = jest.fn().mockResolvedValueOnce(null);
+    Transaction.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(null) });
 
     await deleteTransactionController(req as Request, res as Response);
 
@@ -208,8 +208,8 @@ describe('deleteTransactionController', () => {
       account: 'acc123',
     };
 
-    Transaction.findById = jest.fn().mockResolvedValueOnce(mockTransaction);
-    Account.findById = jest.fn().mockResolvedValueOnce(null);
+    Transaction.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockTransaction) });
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(null) });
 
     await deleteTransactionController(req as Request, res as Response);
 
@@ -239,8 +239,8 @@ describe('deleteTransactionController', () => {
       balance: currentBalance,
     };
 
-    Transaction.findById = jest.fn().mockResolvedValueOnce(mockTransaction);
-    Account.findById = jest.fn().mockResolvedValueOnce(mockAccount);
+    Transaction.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockTransaction) });
+    Account.findById = jest.fn().mockReturnValueOnce({ session: jest.fn().mockResolvedValueOnce(mockAccount) });
 
     await deleteTransactionController(req as Request, res as Response);
 
@@ -253,14 +253,9 @@ describe('deleteTransactionController', () => {
   });
 
   it('should handle errors and abort transaction', async () => {
-    Transaction.startSession = jest.fn().mockReturnValue({
-      startTransaction: jest.fn(),
-      commitTransaction: jest.fn(),
-      abortTransaction: jest.fn(),
-      endSession: jest.fn(),
-    });
-
-    Transaction.findById = jest.fn().mockRejectedValueOnce(new Error('Database error'));
+    Transaction.findById = jest
+      .fn()
+      .mockReturnValueOnce({ session: jest.fn().mockRejectedValueOnce(new Error('Database error')) });
 
     await expect(deleteTransactionController(req as Request, res as Response)).rejects.toThrow('Database error');
   });

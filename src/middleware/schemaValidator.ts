@@ -1,6 +1,6 @@
-import type { Request, Response, NextFunction } from 'express';
-import { type z, ZodError } from 'zod';
+import type { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { ZodError, type z } from 'zod';
 
 type ValidationSchema = {
   body?: z.ZodType;
